@@ -14,9 +14,12 @@
     "dotenv": "^8.0.0",
     "express": "^4.16.4",
     "helmet": "^3.18.0",
+    "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^2.2.0",
     "knex": "^0.16.5",
     "morgan": "^1.9.1",
     "pg": "^7.11.0",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "tasktimer": "^2.0.1"
   }
 }
