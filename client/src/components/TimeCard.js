@@ -26,7 +26,6 @@ const styles = {
 
 function SimpleCard(props) {
   const { classes, timer, calculateDifference } = props;
-
   return (
     <Card className={classes.card}>
       <CardContent>

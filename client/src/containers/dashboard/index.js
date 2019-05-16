@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 
+import TimeChart from "../../components/TimeChart";
 import TimeCard from "../../components/TimeCard";
 import NavBar from "../../components/NavBar";
 
@@ -38,6 +39,7 @@ class Dashboard extends React.Component {
     timer: "",
     started: false,
     timersList: [],
+    chartData: [],
     response: "",
     description: ""
   };
@@ -48,8 +50,9 @@ class Dashboard extends React.Component {
       .then(res =>
         this.setState({
           response: res.data.message && res.data.message,
-          timersList: res.data,
-          started: res.data[0].started
+          timersList: res.data.currentTimer,
+          started: res.data.currentTimer[0].started,
+          chartData: res.data.groupedCategories
         })
       )
       .catch(error => console.log(error));
@@ -85,8 +88,9 @@ class Dashboard extends React.Component {
       .then(res =>
         this.setState({
           response: res.data.message && res.data.message,
-          timersList: res.data,
-          started: res.data[0].started,
+          timersList: res.data.currentTimer,
+          started: res.data.currentTimer[0].started,
+          chartData: res.data.groupedCategories,
           description: ""
         })
       )
@@ -99,8 +103,9 @@ class Dashboard extends React.Component {
       .then(res =>
         this.setState({
           response: res.data.message && res.data.message,
-          timersList: res.data,
-          started: res.data[0].started
+          timersList: res.data.currentTimer,
+          started: res.data.currentTimer[0].started,
+          chartData: res.data.groupedCategories
         })
       )
       .catch(error => console.log(error));
@@ -113,15 +118,17 @@ class Dashboard extends React.Component {
         <NavBar auth={this.props.auth} />
         <Paper className={classes.root} elevation={1}>
           <Typography variant="h5" component="h3">
-            <TextField
-              id="standard-name"
-              label="Task Description"
-              name="description"
-              className={classes.textField}
-              value={this.state.description}
-              onChange={this.handleChange}
-              margin="normal"
-            />
+            {!this.state.started && (
+              <TextField
+                id="standard-name"
+                label="Task Description"
+                name="description"
+                className={classes.textField}
+                value={this.state.description}
+                onChange={this.handleChange}
+                margin="normal"
+              />
+            )}
           </Typography>
           <Button
             variant="contained"
@@ -142,6 +149,7 @@ class Dashboard extends React.Component {
             End task
           </Button>
         </Paper>
+        <TimeChart data={this.state.chartData} />
         <Grid
           container
           className={classes.root}
@@ -160,6 +168,7 @@ class Dashboard extends React.Component {
             >
               {this.state.timersList.map(timer => (
                 <TimeCard
+                  key={timer.id}
                   timer={timer}
                   calculateDifference={this.calculateDifference}
                 />
