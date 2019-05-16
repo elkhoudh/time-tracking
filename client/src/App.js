@@ -17,28 +17,30 @@ const handleAuthentication = ({ location }) => {
 
 function App() {
   return (
-    <div className="App">
-      <Switch>
-        <Route
-          exact
-          path="/"
-          render={props => <LandingPage auth={auth} {...props} />}
-        />
+    <>
+      <div className="App">
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={props => <LandingPage auth={auth} {...props} />}
+          />
 
-        <Route
-          path="/callback"
-          render={props => {
-            handleAuthentication(props);
-            return <Callback {...props} />;
-          }}
-        />
+          <Route
+            path="/callback"
+            render={props => {
+              handleAuthentication(props);
+              return <Callback {...props} />;
+            }}
+          />
 
-        <Route
-          path="/dashboard"
-          render={props => <Dashboard {...props} auth={auth} />}
-        />
-      </Switch>
-    </div>
+          <Route
+            path="/dashboard"
+            render={props => <Dashboard {...props} auth={auth} />}
+          />
+        </Switch>
+      </div>
+    </>
   );
 }
 

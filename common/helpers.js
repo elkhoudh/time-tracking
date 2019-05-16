@@ -19,10 +19,16 @@ const remove = (tbl, id) =>
     .where({ id })
     .del();
 
+const update = (tbl, id, item) =>
+  db(tbl)
+    .where({ id })
+    .update(item);
+
 module.exports = {
   find,
   findBy,
   findAllBy,
   add,
-  remove
+  remove,
+  update
 };
