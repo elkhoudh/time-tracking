@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -8,22 +7,15 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
 
-import { getTimers } from "../../store/actions/timerActions";
+import {
+  getTimers,
+  startTimer,
+  stopTimer,
+  deleteTimer
+} from "../../store/actions/timerActions";
 import TimeChart from "../../components/TimeChart";
 import TimeCard from "../../components/TimeCard";
 import NavBar from "../../components/NavBar";
-
-axios.interceptors.request.use(
-  function(options) {
-    options.headers.authorization = `Bearer ${localStorage.getItem(
-      "id_token"
-    )}`;
-    return options;
-  },
-  function(error) {
-    return Promise.reject(error);
-  }
-);
 
 const styles = theme => ({
   root: {
@@ -47,24 +39,7 @@ class Dashboard extends React.Component {
   };
 
   componentDidMount = () => {
-    axios
-      .get("http://localhost:4000/api/timer")
-      .then(res =>
-        res.data.currentTimer.length
-          ? this.setState({
-              response: res.data.message && res.data.message,
-              timersList: res.data.currentTimer,
-              started: res.data.currentTimer[0].started,
-              chartData: res.data.groupedCategories
-            })
-          : this.setState({
-              response: res.data.message && res.data.message,
-              timersList: [],
-              started: false,
-              chartData: []
-            })
-      )
-      .catch(error => console.log(error));
+    this.props.getTimers();
   };
 
   calculateDifference = (started_at, ended_at) => {
@@ -90,62 +65,23 @@ class Dashboard extends React.Component {
   };
 
   startTimer = () => {
-    axios
-      .post("http://localhost:4000/api/timer/start", {
-        description: this.state.description
-      })
-      .then(res =>
-        this.setState({
-          response: res.data.message && res.data.message,
-          timersList: res.data.currentTimer,
-          started: res.data.currentTimer[0].started,
-          chartData: res.data.groupedCategories,
-          description: ""
-        })
-      )
-      .catch(error => console.log(error));
+    this.props.startTimer(this.state.description);
+    this.setState({ description: "" });
   };
 
   stopTimer = () => {
-    axios
-      .post("http://localhost:4000/api/timer/stop")
-      .then(res =>
-        this.setState({
-          response: res.data.message && res.data.message,
-          timersList: res.data.currentTimer,
-          started: res.data.currentTimer[0].started,
-          chartData: res.data.groupedCategories
-        })
-      )
-      .catch(error => console.log(error));
+    this.props.stopTimer();
   };
 
   deleteTimer = id => {
-    axios
-      .delete(`http://localhost:4000/api/timer/${id}`)
-      .then(res => {
-        res.data.currentTimer.length
-          ? this.setState({
-              response: res.data.message && res.data.message,
-              timersList: res.data.currentTimer,
-              started: res.data.currentTimer[0].started,
-              chartData: res.data.groupedCategories
-            })
-          : this.setState({
-              response: res.data.message && res.data.message,
-              timersList: [],
-              started: false,
-              chartData: []
-            });
-      })
-      .catch(error => console.log(error));
+    this.props.deleteTimer(id);
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, started, chartData, timersList, auth } = this.props;
     return (
       <>
-        <NavBar auth={this.props.auth} />
+        <NavBar auth={auth} />
         <Paper className={classes.root} elevation={1}>
           <Typography variant="h5" component="h3">
             {!this.state.started && (
@@ -164,7 +100,7 @@ class Dashboard extends React.Component {
             variant="contained"
             color="primary"
             className={classes.button}
-            disabled={this.state.started}
+            disabled={started}
             onClick={this.startTimer}
           >
             Start a task
@@ -173,7 +109,7 @@ class Dashboard extends React.Component {
             variant="contained"
             color="secondary"
             className={classes.button}
-            disabled={!this.state.started}
+            disabled={!started}
             onClick={this.stopTimer}
           >
             End task
@@ -195,28 +131,31 @@ class Dashboard extends React.Component {
               justify="center"
               spacing={16}
             >
-              {this.state.timersList.map(timer => (
-                <TimeCard
-                  deleteTimer={this.deleteTimer}
-                  key={timer.id}
-                  timer={timer}
-                  calculateDifference={this.calculateDifference}
-                />
-              ))}
+              {timersList.length &&
+                timersList.map(timer => (
+                  <TimeCard
+                    deleteTimer={this.deleteTimer}
+                    key={timer.id}
+                    timer={timer}
+                    calculateDifference={this.calculateDifference}
+                  />
+                ))}
             </Grid>
           </Grid>
         </Grid>
-        <TimeChart data={this.state.chartData} />
+        <TimeChart data={chartData} />
       </>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  timersList: state.timerReducer.timersList
+  timersList: state.timerReducer.timersList,
+  started: state.timerReducer.started,
+  chartData: state.timerReducer.chartData
 });
 
 export default connect(
   mapStateToProps,
-  { getTimers }
+  { getTimers, startTimer, stopTimer, deleteTimer }
 )(withStyles(styles)(Dashboard));
