@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
+import { toast } from "react-toastify";
 
 import {
   getTimers,
@@ -65,7 +66,11 @@ class Dashboard extends React.Component {
   };
 
   startTimer = () => {
-    this.props.startTimer(this.state.description);
+    if (!this.state.description) {
+      toast.error("Description is required!");
+    } else {
+      this.props.startTimer(this.state.description);
+    }
     this.setState({ description: "" });
   };
 

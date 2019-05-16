@@ -47,12 +47,11 @@ export const START_TIMER_SUCCESS = "START_TIMER_SUCCESS";
 export const START_TIMER_FAILURE = "START_TIMER_FAILURE";
 
 export const startTimer = description => dispatch => {
-  console.log(description);
   dispatch({ type: START_TIMER_START });
   axios
     .post(`${URL}/api/timer/start`, { description })
     .then(res => {
-      dispatch({ type: START_TIMER_START, payload: res.data });
+      dispatch({ type: START_TIMER_SUCCESS, payload: res.data });
     })
     .then(() => dispatch(getTimers()))
     .catch(error => dispatch({ type: START_TIMER_FAILURE, payload: error }));

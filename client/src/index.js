@@ -6,6 +6,7 @@ import "./index.css";
 import App from "./App";
 import history from "./containers/auth-zero/history";
 import store from "./store/store";
+import Toasts from "./components/Toasts.js";
 
 const AppWithRouter = withRouter(App);
 
@@ -14,6 +15,7 @@ const app = (
     <Router history={history}>
       <AppWithRouter />
     </Router>
+    <Toasts />
   </Provider>
 );
 

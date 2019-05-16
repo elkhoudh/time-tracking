@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 import {
   GET_TIMER_START,
   GET_TIMER_SUCCESS,
@@ -51,6 +53,7 @@ export default function timerReducer(state = initialState, action) {
         isLoading: true
       };
     case START_TIMER_SUCCESS:
+      toast.success("Timer has started");
       return {
         ...state,
         isLoading: false,
@@ -59,6 +62,7 @@ export default function timerReducer(state = initialState, action) {
         chartData: action.payload.groupedCategories
       };
     case START_TIMER_FAILURE:
+      toast.error("Timer Already started");
       return {
         ...state,
         isLoading: false,
@@ -71,6 +75,7 @@ export default function timerReducer(state = initialState, action) {
         isLoading: true
       };
     case STOP_TIMER_SUCCESS:
+      toast.success("Timer is stopped");
       return {
         ...state,
         isLoading: false,
