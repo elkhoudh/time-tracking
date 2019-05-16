@@ -120,4 +120,33 @@ route.get("/", authenticate, async (req, res) => {
   }
 });
 
+route.delete("/:id", authenticate, async (req, res) => {
+  const { id } = req.params;
+  const user_id = req.decoded.id;
+
+  try {
+    const exists = await models.findBy("timers", { id, user_id });
+
+    if (exists) {
+      await models.remove("timers", { id, user_id });
+
+      const currentTimer = await models
+        .findAllBy("timers", { user_id })
+        .orderBy("created_at", "desc");
+
+      const groupedCategories = await db
+        .select("timers.description")
+        .count("*")
+        .where({ user_id })
+        .from("timers")
+        .groupBy("timers.description");
+
+      res.json({ currentTimer, groupedCategories });
+    } else {
+      res.status(404).json({ message: "Timer does not exist" });
+    }
+  } catch ({ message }) {
+    res.status(500).json({ message });
+  }
+});
 module.exports = route;

@@ -14,9 +14,9 @@ const add = (tbl, item) =>
     .insert(item)
     .returning("id");
 
-const remove = (tbl, id) =>
+const remove = (tbl, filter) =>
   db(tbl)
-    .where({ id })
+    .where(filter)
     .del();
 
 const update = (tbl, id, item) =>

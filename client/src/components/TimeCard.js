@@ -5,6 +5,9 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import moment from "moment";
+import CardActions from "@material-ui/core/CardActions";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
 
 const styles = {
   card: {
@@ -25,7 +28,7 @@ const styles = {
 };
 
 function SimpleCard(props) {
-  const { classes, timer, calculateDifference } = props;
+  const { classes, timer, calculateDifference, deleteTimer } = props;
   return (
     <Card className={classes.card}>
       <CardContent>
@@ -53,6 +56,14 @@ function SimpleCard(props) {
             : "Still in progress"}
         </Typography>
       </CardContent>
+      <CardActions>
+        <IconButton
+          aria-label="Add to favorites"
+          onClick={() => deleteTimer(timer.id)}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </CardActions>
     </Card>
   );
 }

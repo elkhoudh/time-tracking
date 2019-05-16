@@ -1,5 +1,7 @@
 import React, { PureComponent } from "react";
 import { PieChart, Pie, Sector } from "recharts";
+import Paper from "@material-ui/core/Paper";
+import { withStyles } from "@material-ui/core/styles";
 
 const renderActiveShape = props => {
   const RADIAN = Math.PI / 180;
@@ -60,7 +62,7 @@ const renderActiveShape = props => {
         y={ey}
         textAnchor={textAnchor}
         fill="#333"
-      >{`PV ${value}`}</text>
+      >{`${payload.description} ${value}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
@@ -74,6 +76,19 @@ const renderActiveShape = props => {
   );
 };
 
+const styles = theme => ({
+  root: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
+    margin: theme.spacing.unit * 4,
+    flexGrow: 1,
+    overflowX: "hidden",
+    display: "flex",
+    justifyContent: "center"
+  }
+});
+
 class TimeChart extends PureComponent {
   state = {
     activeIndex: 0
@@ -86,25 +101,28 @@ class TimeChart extends PureComponent {
   };
 
   render() {
+    const { classes } = this.props;
     return (
-      <PieChart width={400} height={400}>
-        <Pie
-          activeIndex={this.state.activeIndex}
-          activeShape={renderActiveShape}
-          data={this.props.data.map(t => {
-            return { description: t.description, count: Number(t.count) };
-          })}
-          cx={200}
-          cy={200}
-          innerRadius={60}
-          outerRadius={80}
-          fill="#8884d8"
-          dataKey="count"
-          onMouseEnter={this.onPieEnter}
-        />
-      </PieChart>
+      <Paper className={classes.root} elevation={1}>
+        <PieChart width={500} height={500}>
+          <Pie
+            activeIndex={this.state.activeIndex}
+            activeShape={renderActiveShape}
+            data={this.props.data.map(t => {
+              return { description: t.description, count: Number(t.count) };
+            })}
+            cx={200}
+            cy={200}
+            innerRadius={100}
+            outerRadius={120}
+            fill="#8884d8"
+            dataKey="count"
+            onMouseEnter={this.onPieEnter}
+          />
+        </PieChart>
+      </Paper>
     );
   }
 }
 
-export default TimeChart;
+export default withStyles(styles)(TimeChart);

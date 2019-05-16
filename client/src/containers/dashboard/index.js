@@ -6,7 +6,9 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
+import { connect } from "react-redux";
 
+import { getTimers } from "../../store/actions/timerActions";
 import TimeChart from "../../components/TimeChart";
 import TimeCard from "../../components/TimeCard";
 import NavBar from "../../components/NavBar";
@@ -48,12 +50,19 @@ class Dashboard extends React.Component {
     axios
       .get("http://localhost:4000/api/timer")
       .then(res =>
-        this.setState({
-          response: res.data.message && res.data.message,
-          timersList: res.data.currentTimer,
-          started: res.data.currentTimer[0].started,
-          chartData: res.data.groupedCategories
-        })
+        res.data.currentTimer.length
+          ? this.setState({
+              response: res.data.message && res.data.message,
+              timersList: res.data.currentTimer,
+              started: res.data.currentTimer[0].started,
+              chartData: res.data.groupedCategories
+            })
+          : this.setState({
+              response: res.data.message && res.data.message,
+              timersList: [],
+              started: false,
+              chartData: []
+            })
       )
       .catch(error => console.log(error));
   };
@@ -111,6 +120,27 @@ class Dashboard extends React.Component {
       .catch(error => console.log(error));
   };
 
+  deleteTimer = id => {
+    axios
+      .delete(`http://localhost:4000/api/timer/${id}`)
+      .then(res => {
+        res.data.currentTimer.length
+          ? this.setState({
+              response: res.data.message && res.data.message,
+              timersList: res.data.currentTimer,
+              started: res.data.currentTimer[0].started,
+              chartData: res.data.groupedCategories
+            })
+          : this.setState({
+              response: res.data.message && res.data.message,
+              timersList: [],
+              started: false,
+              chartData: []
+            });
+      })
+      .catch(error => console.log(error));
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -149,7 +179,6 @@ class Dashboard extends React.Component {
             End task
           </Button>
         </Paper>
-        <TimeChart data={this.state.chartData} />
         <Grid
           container
           className={classes.root}
@@ -168,21 +197,26 @@ class Dashboard extends React.Component {
             >
               {this.state.timersList.map(timer => (
                 <TimeCard
+                  deleteTimer={this.deleteTimer}
                   key={timer.id}
                   timer={timer}
                   calculateDifference={this.calculateDifference}
                 />
-                // <h1 key={timer.id}>
-                //   {timer.description}{" "}
-                //   {this.calculateDifference(timer.started_at, timer.ended_at)}
-                // </h1>
               ))}
             </Grid>
           </Grid>
         </Grid>
+        <TimeChart data={this.state.chartData} />
       </>
     );
   }
 }
 
-export default withStyles(styles)(Dashboard);
+const mapStateToProps = state => ({
+  timersList: state.timerReducer.timersList
+});
+
+export default connect(
+  mapStateToProps,
+  { getTimers }
+)(withStyles(styles)(Dashboard));
