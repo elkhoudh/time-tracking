@@ -67,7 +67,7 @@ const renderActiveShape = props => {
       <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
         {payload.description}
         {"\n"}
-        {`(Rate ${(percent * 100).toFixed(2)}%)`}
+        {(percent * 100).toFixed(2)}%
       </text>
       <Sector
         cx={cx}

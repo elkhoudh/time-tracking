@@ -30,24 +30,37 @@ const styles = {
 function SimpleCard(props) {
   const { classes, timer, calculateDifference, deleteTimer } = props;
   return (
-    <Card className={classes.card}>
+    <Card
+      className={classes.card}
+      style={!timer.ended_at ? { background: "#892785" } : null}
+    >
       <CardContent>
         <Typography
           className={classes.title}
-          color="textSecondary"
+          color={!timer.ended_at ? "secondary" : "textSecondary"}
           gutterBottom
         >
           Started {moment(timer.created_at).fromNow()}
         </Typography>
-        <Typography variant="h5" component="h2">
+        <Typography
+          variant="h5"
+          component="h2"
+          color={!timer.ended_at ? "secondary" : "inherit"}
+        >
           {timer.description}
         </Typography>
-        <Typography className={classes.pos} color="textSecondary">
+        <Typography
+          className={classes.pos}
+          color={!timer.ended_at ? "secondary" : "textSecondary"}
+        >
           {timer.ended_at
             ? `Ended ${moment(timer.updated_at).fromNow()}`
             : "In Progress"}
         </Typography>
-        <Typography component="p">
+        <Typography
+          component="p"
+          color={!timer.ended_at ? "secondary" : "inherit"}
+        >
           {timer.ended_at
             ? `Total Time ${calculateDifference(
                 timer.started_at,
@@ -66,6 +79,7 @@ function SimpleCard(props) {
               return;
             }
           }}
+          color={!timer.ended_at ? "secondary" : "default"}
         >
           <DeleteIcon />
         </IconButton>

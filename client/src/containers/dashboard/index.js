@@ -136,7 +136,12 @@ class Dashboard extends React.Component {
         {isLoading && <Loading />}
         {/* ------------------------------ Timer ------------------------------ */}
         {timersList.length && started && (
-          <Typography className={classes.timer} variant="h2" component="h2">
+          <Typography
+            className={classes.timer}
+            variant="h2"
+            component="h2"
+            color="primary"
+          >
             {this.calculateDifference(timersList[0].started_at, Date.now())}
           </Typography>
         )}
