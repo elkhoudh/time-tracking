@@ -100,7 +100,6 @@ export default function timerReducer(state = initialState, action) {
         ...state,
         isLoading: false,
         timersList: action.payload.currentTimer,
-        started: action.payload.currentTimer[0].started,
         chartData: action.payload.groupedCategories
       };
     case DELETE_TIMER_FAILURE:

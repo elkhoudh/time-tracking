@@ -51,7 +51,6 @@ export const startTimer = description => dispatch => {
   axios
     .post(`${URL}/api/timer/start`, { description })
     .then(res => {
-      console.log(res.data);
       dispatch({ type: START_TIMER_SUCCESS, payload: res.data });
     })
     .then(() => dispatch(getTimers()))
