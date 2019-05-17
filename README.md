@@ -51,6 +51,16 @@
 - [redux](https://www.npmjs.com/package/redux)
 - [redux-thunk](https://www.npmjs.com/package/redux-thunk)
 
+### Summary Table of API Endpoints
+
+| Type   | Endpoints          | Description                                          |
+| ------ | ------------------ | ---------------------------------------------------- |
+| POST   | /api/auth/register | Register User using Auth0                            |
+| POST   | /api/timer/start   | Takes a description of the timer in body (Private)   |
+| POST   | /api/timer/start   | Takes nothing, stops current running timer (Private) |
+| GET    | /api/timer/        | Gets all timers for logged in user (Private)         |
+| DELETE | /api/timer/:id     | Delete a timer (Private)                             |
+
 ### Author
 
 - [Hamza Elkhoudiri](https://github.com/elkhoudh)

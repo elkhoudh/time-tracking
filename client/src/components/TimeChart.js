@@ -144,7 +144,6 @@ class TimeChart extends PureComponent {
               activeIndex={this.state.activeIndex}
               activeShape={renderActiveShape}
               data={this.props.timersList.map(t => {
-                console.log(t.percentageSpent);
                 return {
                   description: t.description,
                   count: Number(t.percentageSpent)
