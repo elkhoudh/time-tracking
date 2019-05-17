@@ -1,6 +1,5 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -29,16 +28,35 @@ const styles = theme => ({
   },
   button: {
     backgroundColor: "#f44336"
+  },
+  buttonContainer: {
+    margin: 20
+  },
+  timer: {
+    padding: 20
   }
 });
 
 class Dashboard extends React.Component {
   state = {
-    description: ""
+    description: "",
+    timer: ""
   };
 
   componentDidMount = () => {
     this.props.getTimers();
+    this.interval = setInterval(() => {
+      this.setState({
+        timer: this.calculateDifference(
+          this.props.timersList[0].started_at,
+          Date.now()
+        )
+      });
+    }, 1000);
+  };
+
+  componentWillUnmount = () => {
+    clearInterval(this.interval);
   };
 
   calculateDifference = (started_at, ended_at) => {
@@ -55,6 +73,7 @@ class Dashboard extends React.Component {
       hours = hours < 10 ? "0" + hours : hours;
       minutes = minutes < 10 ? "0" + minutes : minutes;
       seconds = seconds < 10 ? "0" + seconds : seconds;
+
       return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
     }
   };
@@ -85,20 +104,25 @@ class Dashboard extends React.Component {
     return (
       <>
         <NavBar auth={auth} />
-        <Paper className={classes.root} elevation={1}>
-          <Typography variant="h5" component="h3">
-            {!this.state.started && (
-              <TextField
-                id="standard-name"
-                label="Task Description"
-                name="description"
-                className={classes.textField}
-                value={this.state.description}
-                onChange={this.handleChange}
-                margin="normal"
-              />
-            )}
+        {timersList.length && started && (
+          <Typography className={classes.timer} variant="h2" component="h2">
+            {this.calculateDifference(timersList[0].started_at, Date.now())}
           </Typography>
+        )}
+        <Typography variant="h5" component="h3">
+          {!this.props.started && (
+            <TextField
+              id="standard-name"
+              label="Task Description"
+              name="description"
+              className={classes.textField}
+              value={this.state.description}
+              onChange={this.handleChange}
+              margin="normal"
+            />
+          )}
+        </Typography>
+        <div className={classes.buttonContainer}>
           <Button
             variant="contained"
             color="primary"
@@ -116,7 +140,7 @@ class Dashboard extends React.Component {
           >
             End task
           </Button>
-        </Paper>
+        </div>
         <Grid
           container
           className={classes.root}
