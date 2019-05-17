@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 import Callback from "./containers/auth-zero/Callback/Callback.js";
 import Auth from "./containers/auth-zero/Auth/Auth.js";
@@ -15,31 +16,42 @@ const handleAuthentication = ({ location }) => {
   }
 };
 
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#892785" },
+    secondary: { main: "#f1f1f1" },
+    error: { main: "#ff1744" }
+  },
+  typography: { useNextVariants: true }
+});
+
 function App() {
   return (
     <>
-      <div className="App">
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={props => <LandingPage auth={auth} {...props} />}
-          />
+      <MuiThemeProvider theme={theme}>
+        <div className="App">
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={props => <LandingPage auth={auth} {...props} />}
+            />
 
-          <Route
-            path="/callback"
-            render={props => {
-              handleAuthentication(props);
-              return <Callback {...props} />;
-            }}
-          />
+            <Route
+              path="/callback"
+              render={props => {
+                handleAuthentication(props);
+                return <Callback {...props} />;
+              }}
+            />
 
-          <Route
-            path="/dashboard"
-            render={props => <Dashboard {...props} auth={auth} />}
-          />
-        </Switch>
-      </div>
+            <Route
+              path="/dashboard"
+              render={props => <Dashboard {...props} auth={auth} />}
+            />
+          </Switch>
+        </div>
+      </MuiThemeProvider>
     </>
   );
 }

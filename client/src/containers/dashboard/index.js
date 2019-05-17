@@ -26,6 +26,9 @@ const styles = theme => ({
     margin: theme.spacing.unit * 4,
     flexGrow: 1,
     overflowX: "hidden"
+  },
+  button: {
+    backgroundColor: "#f44336"
   }
 });
 
@@ -99,7 +102,6 @@ class Dashboard extends React.Component {
           <Button
             variant="contained"
             color="primary"
-            className={classes.button}
             disabled={started}
             onClick={this.startTimer}
           >
@@ -107,7 +109,7 @@ class Dashboard extends React.Component {
           </Button>
           <Button
             variant="contained"
-            color="secondary"
+            color="primary"
             className={classes.button}
             disabled={!started}
             onClick={this.stopTimer}
