@@ -62,23 +62,7 @@ class Dashboard extends React.Component {
     clearInterval(this.interval);
   };
 
-  handleSearch = e => {
-    e.preventDefault();
-    this.setState({
-      timersList: this.props.timersList.filter(timer =>
-        timer.description.includes(this.state.search)
-      )
-    });
-  };
-
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
+  /* Calculate the difference between 2 time stamps*/
   calculateDifference = (started_at, ended_at) => {
     if (!ended_at) {
       return;
@@ -98,10 +82,12 @@ class Dashboard extends React.Component {
     }
   };
 
+  /* Handle Input change */
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  /* Start a new timer */
   startTimer = () => {
     if (!this.state.description) {
       toast.error("Description is required!");
@@ -112,12 +98,25 @@ class Dashboard extends React.Component {
     this.setState({ description: "" });
   };
 
+  /* Stop already started timers */
   stopTimer = () => {
     this.props.stopTimer();
   };
 
+  /* Delete timers */
   deleteTimer = id => {
     this.props.deleteTimer(id);
+    this.setState({ search: "" });
+  };
+
+  /* Filter matching strings and update the state */
+  handleSearch = e => {
+    e.preventDefault();
+    this.setState({
+      timersList: this.props.timersList.filter(timer =>
+        timer.description.includes(this.state.search)
+      )
+    });
   };
 
   render() {
@@ -131,13 +130,17 @@ class Dashboard extends React.Component {
     } = this.props;
     return (
       <>
+        {/* ------------------------------ Navigation Bar ------------------------------ */}
         <NavBar auth={auth} />
+        {/* ------------------------------ Loader ------------------------------ */}
         {isLoading && <Loading />}
+        {/* ------------------------------ Timer ------------------------------ */}
         {timersList.length && started && (
           <Typography className={classes.timer} variant="h2" component="h2">
             {this.calculateDifference(timersList[0].started_at, Date.now())}
           </Typography>
         )}
+        {/* ------------------------------ Timer controls ------------------------------ */}
         <Typography variant="h5" component="h3">
           {!this.props.started && (
             <TextField
@@ -171,6 +174,7 @@ class Dashboard extends React.Component {
           </Button>
         </div>
         <hr />
+        {/* ------------------------------ Search form ------------------------------ */}
         <form onSubmit={this.handleSearch}>
           <TextField
             id="standard-name"
@@ -182,6 +186,7 @@ class Dashboard extends React.Component {
             margin="normal"
           />
         </form>
+        {/* ------------------------------ Timer Cards ------------------------------ */}
         <Grid
           container
           className={classes.root}
@@ -219,6 +224,7 @@ class Dashboard extends React.Component {
             </Grid>
           </Grid>
         </Grid>
+        {/* ------------------------------ Charts ------------------------------ */}
         <TimeChart data={chartData} timersList={timersList} />
       </>
     );
