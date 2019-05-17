@@ -142,7 +142,7 @@ class Dashboard extends React.Component {
           {!this.props.started && (
             <TextField
               id="standard-name"
-              label="Enter Task Description"
+              label="Search for task cards..."
               name="description"
               className={classes.textField}
               value={this.state.description}

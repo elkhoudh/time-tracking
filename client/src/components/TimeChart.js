@@ -14,7 +14,13 @@ const styles = theme => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    width: "50%"
+    width: "50%",
+    [theme.breakpoints.down("sm")]: {
+      width: "88%",
+      marginRight: 20,
+      paddingLeft: "unset",
+      margin: 20
+    }
   },
   graphHeader: {
     fontSize: "1.2rem",
@@ -24,7 +30,10 @@ const styles = theme => ({
     borderBottom: "1px solid rgba(0, 0, 0, 0.15)"
   },
   graphsContainer: {
-    display: "flex"
+    display: "flex",
+    [theme.breakpoints.down("sm")]: {
+      display: "block"
+    }
   }
 });
 
