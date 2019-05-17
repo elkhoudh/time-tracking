@@ -41,6 +41,11 @@ route.post("/start", authenticate, async (req, res) => {
           user_id: id
         });
 
+        // Logged in user's timers
+        const currentTimer = await models
+          .findAllBy("timers", { user_id: id })
+          .orderBy("created_at", "desc");
+
         // Send back all timers and graph data
         res.json({ currentTimer, groupedCategories });
       }
@@ -174,7 +179,7 @@ route.delete("/:id", authenticate, async (req, res) => {
     // if the requested timer exists,
     if (exists) {
       // remove it
-      await models.remove("timers", { id, user_id });
+      const deleteTimer = await models.remove("timers", { id, user_id });
 
       // get logged in user's timers
       const currentTimer = await models

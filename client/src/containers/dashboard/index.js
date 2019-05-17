@@ -218,7 +218,7 @@ class Dashboard extends React.Component {
                     calculateDifference={this.calculateDifference}
                   />
                 ))
-              ) : timersList.length && timersList.length ? (
+              ) : timersList.length ? (
                 timersList.map(timer => (
                   <TimeCard
                     deleteTimer={this.deleteTimer}
