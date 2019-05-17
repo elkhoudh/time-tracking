@@ -59,7 +59,13 @@ function SimpleCard(props) {
       <CardActions>
         <IconButton
           aria-label="Add to favorites"
-          onClick={() => deleteTimer(timer.id)}
+          onClick={() => {
+            if (window.confirm("Are you sure you want to delete timer?")) {
+              deleteTimer(timer.id);
+            } else {
+              return;
+            }
+          }}
         >
           <DeleteIcon />
         </IconButton>

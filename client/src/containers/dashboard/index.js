@@ -71,6 +71,14 @@ class Dashboard extends React.Component {
     });
   };
 
+  handleOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
   calculateDifference = (started_at, ended_at) => {
     if (!ended_at) {
       return;
