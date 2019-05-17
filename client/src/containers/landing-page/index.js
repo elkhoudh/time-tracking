@@ -1,13 +1,16 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
+import background from "../../assets/background.png";
 
 const styles = theme => ({
   container: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: "100vh"
+    height: "100vh",
+    backgroundImage: `url('${background}')`,
+    backgroundSize: "cover"
   }
 });
 
@@ -24,7 +27,7 @@ class LandingPage extends React.Component {
 
     return (
       <div className={classes.container}>
-        <Button variant="contained" color="primary" onClick={this.login}>
+        <Button variant="contained" color="secondary" onClick={this.login}>
           Login/Register
         </Button>
       </div>
