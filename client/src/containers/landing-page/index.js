@@ -16,7 +16,7 @@ const styles = theme => ({
   },
   title: {
     padding: "50px 0",
-    fontSize: "2rem"
+    fontSize: "2.5rem"
   }
 });
 
