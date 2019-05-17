@@ -18,7 +18,8 @@
 
 - Install [yarn](https://yarnpkg.com/en/) or [npm](https://www.npmjs.com/) to handle all your dependencies
 - Clone the project down to your local machine and navigate to your local clone where your package.json file is located
-- Type _yarn_ or _npm install_ to begin bringing down all necessary packages to replicate the frontend locally
+- Type _yarn_ or _npm install_ to begin bringing down all necessary packages to replicate the server locally
+- cd into the client/ folder, Type _yarn_ or _npm install_ to begin bringing down all necessary packages to replicate the client locally
 - Upon successful completion of dependency introduction, you can type _yarn start_ or _npm start_ to spin up a local instance of the time tracker front end
 
   ### Client Environmental Variables
