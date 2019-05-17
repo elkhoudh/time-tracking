@@ -229,7 +229,7 @@ class Dashboard extends React.Component {
                 ))
               ) : (
                 <Typography variant="h2" component="h2" color="primary">
-                  NO TIMERS YET
+                  NO TIMERS FOUND
                 </Typography>
               )}
             </Grid>
