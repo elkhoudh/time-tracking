@@ -7,6 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 
+import Loading from "../../components/Loading";
 import {
   getTimers,
   startTimer,
@@ -111,10 +112,18 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    const { classes, started, chartData, timersList, auth } = this.props;
+    const {
+      classes,
+      started,
+      chartData,
+      timersList,
+      auth,
+      isLoading
+    } = this.props;
     return (
       <>
         <NavBar auth={auth} />
+        {isLoading && <Loading />}
         {timersList.length && started && (
           <Typography className={classes.timer} variant="h2" component="h2">
             {this.calculateDifference(timersList[0].started_at, Date.now())}
@@ -210,7 +219,8 @@ class Dashboard extends React.Component {
 const mapStateToProps = state => ({
   timersList: state.timerReducer.timersList,
   started: state.timerReducer.started,
-  chartData: state.timerReducer.chartData
+  chartData: state.timerReducer.chartData,
+  isLoading: state.timerReducer.isLoading
 });
 
 export default connect(
