@@ -201,7 +201,7 @@ class Dashboard extends React.Component {
             </Grid>
           </Grid>
         </Grid>
-        <TimeChart data={chartData} />
+        <TimeChart data={chartData} timersList={timersList} />
       </>
     );
   }

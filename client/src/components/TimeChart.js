@@ -3,6 +3,31 @@ import { PieChart, Pie, Sector } from "recharts";
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 
+const styles = theme => ({
+  root: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
+    margin: theme.spacing.unit * 4,
+    flexGrow: 1,
+    overflowX: "hidden",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    width: "50%"
+  },
+  graphHeader: {
+    fontSize: "1.2rem",
+    marginBottom: "5px",
+    fontWeight: 100,
+    padding: "10px 0",
+    borderBottom: "1px solid rgba(0, 0, 0, 0.15)"
+  },
+  graphsContainer: {
+    display: "flex"
+  }
+});
+
 const renderActiveShape = props => {
   const RADIAN = Math.PI / 180;
   const {
@@ -32,6 +57,8 @@ const renderActiveShape = props => {
     <g>
       <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
         {payload.description}
+        {"\n"}
+        {`(Rate ${(percent * 100).toFixed(2)}%)`}
       </text>
       <Sector
         cx={cx}
@@ -70,36 +97,11 @@ const renderActiveShape = props => {
         textAnchor={textAnchor}
         fill="#999"
       >
-        {`(Rate ${(percent * 100).toFixed(2)}%)`}
+        {(percent * 100).toFixed(2)}%
       </text>
     </g>
   );
 };
-
-const styles = theme => ({
-  root: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
-    margin: theme.spacing.unit * 4,
-    flexGrow: 1,
-    overflowX: "hidden",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    width: "50%"
-  },
-  graphHeader: {
-    fontSize: "1.2rem",
-    marginBottom: "5px",
-    fontWeight: 100,
-    padding: "10px 0",
-    borderBottom: "1px solid rgba(0, 0, 0, 0.15)"
-  },
-  graphsContainer: {
-    display: "flex"
-  }
-});
 
 class TimeChart extends PureComponent {
   state = {
@@ -141,8 +143,12 @@ class TimeChart extends PureComponent {
             <Pie
               activeIndex={this.state.activeIndex}
               activeShape={renderActiveShape}
-              data={this.props.data.map(t => {
-                return { description: t.description, count: Number(t.count) };
+              data={this.props.timersList.map(t => {
+                console.log(t.percentageSpent);
+                return {
+                  description: t.description,
+                  count: Number(t.percentageSpent)
+                };
               })}
               cx={200}
               cy={200}
