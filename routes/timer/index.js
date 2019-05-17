@@ -129,7 +129,7 @@ route.get("/", authenticate, async (req, res) => {
         Number(hours) * 3600,
         Number(minutes) * 60,
         Number(seconds)
-      ].reduce((a, b) => a + b);
+      ].reduce((a, b) => a + b, 0);
     };
 
     // total time spent by user
@@ -137,7 +137,7 @@ route.get("/", authenticate, async (req, res) => {
       .map(timer => {
         return calculateDifferenceInseconds(timer.started_at, timer.ended_at);
       })
-      .reduce((a, b) => a + b);
+      .reduce((a, b) => a + b, 0);
 
     // calculating and attaching percentage to the currentTimer
     currentTimer.map(timer => {
