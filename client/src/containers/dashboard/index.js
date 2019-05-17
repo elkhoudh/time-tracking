@@ -98,6 +98,7 @@ class Dashboard extends React.Component {
     if (!this.state.description) {
       toast.error("Description is required!");
     } else {
+      this.setState({ search: "" });
       this.props.startTimer(this.state.description);
     }
     this.setState({ description: "" });

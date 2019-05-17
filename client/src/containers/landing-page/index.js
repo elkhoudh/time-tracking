@@ -2,7 +2,6 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
-import background from "../../assets/background.png";
 
 const styles = theme => ({
   container: {
@@ -10,9 +9,7 @@ const styles = theme => ({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
-    height: "100vh",
-    backgroundImage: `url('${background}')`,
-    backgroundSize: "cover"
+    height: "100vh"
   },
   title: {
     padding: "50px 0",
