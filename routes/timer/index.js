@@ -21,7 +21,7 @@ route.post("/start", authenticate, async (req, res) => {
 
     // if no description, don't start the timer/task
     if (!description) {
-      res.json({ currentTimer, groupedCategories });
+      res.status(422).json({ message: "Description required" });
     } else {
       // Check if the timer has already been started
       const isStarted = await models.findBy("timers", {
