@@ -150,7 +150,7 @@ class Dashboard extends React.Component {
           {!this.props.started && (
             <TextField
               id="standard-name"
-              label="Search for task cards..."
+              label="Enter task description.."
               name="description"
               className={classes.textField}
               value={this.state.description}
@@ -183,7 +183,7 @@ class Dashboard extends React.Component {
         <form onSubmit={this.handleSearch}>
           <TextField
             id="standard-name"
-            label="Search for timeframes"
+            label="Search for task cards..."
             name="search"
             className={classes.textField}
             value={this.state.search}
