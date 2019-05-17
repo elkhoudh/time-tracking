@@ -85,7 +85,19 @@ const styles = theme => ({
     flexGrow: 1,
     overflowX: "hidden",
     display: "flex",
-    justifyContent: "center"
+    flexDirection: "column",
+    justifyContent: "center",
+    width: "50%"
+  },
+  graphHeader: {
+    fontSize: "1.2rem",
+    marginBottom: "5px",
+    fontWeight: 100,
+    padding: "10px 0",
+    borderBottom: "1px solid rgba(0, 0, 0, 0.15)"
+  },
+  graphsContainer: {
+    display: "flex"
   }
 });
 
@@ -103,24 +115,46 @@ class TimeChart extends PureComponent {
   render() {
     const { classes } = this.props;
     return (
-      <Paper className={classes.root} elevation={1}>
-        <PieChart width={500} height={500}>
-          <Pie
-            activeIndex={this.state.activeIndex}
-            activeShape={renderActiveShape}
-            data={this.props.data.map(t => {
-              return { description: t.description, count: Number(t.count) };
-            })}
-            cx={200}
-            cy={200}
-            innerRadius={100}
-            outerRadius={120}
-            fill="#8884d8"
-            dataKey="count"
-            onMouseEnter={this.onPieEnter}
-          />
-        </PieChart>
-      </Paper>
+      <div className={classes.graphsContainer}>
+        <Paper className={classes.root} elevation={1}>
+          <h2 className={classes.graphHeader}>Percentage of tasks done</h2>
+          <PieChart width={400} height={400}>
+            <Pie
+              activeIndex={this.state.activeIndex}
+              activeShape={renderActiveShape}
+              data={this.props.data.map(t => {
+                return { description: t.description, count: Number(t.count) };
+              })}
+              cx={200}
+              cy={200}
+              innerRadius={80}
+              outerRadius={100}
+              fill="#8884d8"
+              dataKey="count"
+              onMouseEnter={this.onPieEnter}
+            />
+          </PieChart>
+        </Paper>
+        <Paper className={classes.root} elevation={1}>
+          <h2 className={classes.graphHeader}>Aggregation of time spent</h2>
+          <PieChart width={400} height={400}>
+            <Pie
+              activeIndex={this.state.activeIndex}
+              activeShape={renderActiveShape}
+              data={this.props.data.map(t => {
+                return { description: t.description, count: Number(t.count) };
+              })}
+              cx={200}
+              cy={200}
+              innerRadius={80}
+              outerRadius={100}
+              fill="#8884d8"
+              dataKey="count"
+              onMouseEnter={this.onPieEnter}
+            />
+          </PieChart>
+        </Paper>
+      </div>
     );
   }
 }

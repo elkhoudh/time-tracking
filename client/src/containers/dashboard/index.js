@@ -40,7 +40,9 @@ const styles = theme => ({
 class Dashboard extends React.Component {
   state = {
     description: "",
-    timer: ""
+    timer: "",
+    search: "",
+    timersList: []
   };
 
   componentDidMount = () => {
@@ -57,6 +59,15 @@ class Dashboard extends React.Component {
 
   componentWillUnmount = () => {
     clearInterval(this.interval);
+  };
+
+  handleSearch = e => {
+    e.preventDefault();
+    this.setState({
+      timersList: this.props.timersList.filter(timer =>
+        timer.description.includes(this.state.search)
+      )
+    });
   };
 
   calculateDifference = (started_at, ended_at) => {
@@ -113,7 +124,7 @@ class Dashboard extends React.Component {
           {!this.props.started && (
             <TextField
               id="standard-name"
-              label="Task Description"
+              label="Enter Task Description"
               name="description"
               className={classes.textField}
               value={this.state.description}
@@ -141,6 +152,18 @@ class Dashboard extends React.Component {
             End task
           </Button>
         </div>
+        <hr />
+        <form onSubmit={this.handleSearch}>
+          <TextField
+            id="standard-name"
+            label="Search for timeframes"
+            name="search"
+            className={classes.textField}
+            value={this.state.search}
+            onChange={this.handleChange}
+            margin="normal"
+          />
+        </form>
         <Grid
           container
           className={classes.root}
@@ -157,15 +180,24 @@ class Dashboard extends React.Component {
               justify="center"
               spacing={16}
             >
-              {timersList.length &&
-                timersList.map(timer => (
-                  <TimeCard
-                    deleteTimer={this.deleteTimer}
-                    key={timer.id}
-                    timer={timer}
-                    calculateDifference={this.calculateDifference}
-                  />
-                ))}
+              {this.state.timersList.length && this.state.search
+                ? this.state.timersList.map(timer => (
+                    <TimeCard
+                      deleteTimer={this.deleteTimer}
+                      key={timer.id}
+                      timer={timer}
+                      calculateDifference={this.calculateDifference}
+                    />
+                  ))
+                : timersList.length &&
+                  timersList.map(timer => (
+                    <TimeCard
+                      deleteTimer={this.deleteTimer}
+                      key={timer.id}
+                      timer={timer}
+                      calculateDifference={this.calculateDifference}
+                    />
+                  ))}
             </Grid>
           </Grid>
         </Grid>
