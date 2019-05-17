@@ -19,10 +19,18 @@ const remove = (tbl, filter) =>
     .where(filter)
     .del();
 
-const update = (tbl, id, item) =>
+const update = (tbl, filter, item) =>
   db(tbl)
-    .where({ id })
+    .where(filter)
     .update(item);
+
+const groupedCategories = id =>
+  db
+    .select("timers.description")
+    .count("*")
+    .where({ user_id: id })
+    .from("timers")
+    .groupBy("timers.description");
 
 module.exports = {
   find,
@@ -30,5 +38,6 @@ module.exports = {
   findAllBy,
   add,
   remove,
-  update
+  update,
+  groupedCategories
 };

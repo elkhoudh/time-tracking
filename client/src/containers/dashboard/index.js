@@ -31,11 +31,6 @@ const styles = theme => ({
 
 class Dashboard extends React.Component {
   state = {
-    timer: "",
-    started: false,
-    timersList: [],
-    chartData: [],
-    response: "",
     description: ""
   };
 
