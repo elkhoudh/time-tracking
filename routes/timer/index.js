@@ -106,6 +106,50 @@ route.get("/", authenticate, async (req, res) => {
       .findAllBy("timers", { user_id: id })
       .orderBy("created_at", "desc");
 
+    // Timers already done
+    const doneTimers = await models.findAllBy("timers", {
+      user_id: id,
+      started: false
+    });
+
+    // Calculates the difference between 2 timestamps
+    const calculateDifferenceInseconds = (started_at, ended_at) => {
+      const diff = ended_at - started_at;
+
+      let milliseconds = parseInt((diff % 1000) / 100),
+        seconds = parseInt((diff / 1000) % 60),
+        minutes = parseInt((diff / (1000 * 60)) % 60),
+        hours = parseInt((diff / (1000 * 60 * 60)) % 24);
+
+      hours = hours < 10 ? "0" + hours : hours;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+
+      return [
+        Number(hours) * 3600,
+        Number(minutes) * 60,
+        Number(seconds)
+      ].reduce((a, b) => a + b);
+    };
+
+    // total time spent by user
+    const totalSecondsSpent = doneTimers
+      .map(timer => {
+        return calculateDifferenceInseconds(timer.started_at, timer.ended_at);
+      })
+      .reduce((a, b) => a + b);
+
+    // calculating and attaching percentage to the currentTimer
+    currentTimer.map(timer => {
+      timer.percentageSpent =
+        Math.round(
+          (calculateDifferenceInseconds(timer.started_at, timer.ended_at) /
+            totalSecondsSpent) *
+            100 *
+            100
+        ) / 100;
+    });
+
     // Counting and grouping by task (./common/helpers.js)
     const groupedCategories = await models.groupedCategories(id);
 

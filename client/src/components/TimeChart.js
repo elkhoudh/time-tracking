@@ -129,7 +129,7 @@ class TimeChart extends PureComponent {
               cy={200}
               innerRadius={80}
               outerRadius={100}
-              fill="#8884d8"
+              fill="#892785"
               dataKey="count"
               onMouseEnter={this.onPieEnter}
             />
@@ -148,7 +148,7 @@ class TimeChart extends PureComponent {
               cy={200}
               innerRadius={80}
               outerRadius={100}
-              fill="#8884d8"
+              fill="#892785"
               dataKey="count"
               onMouseEnter={this.onPieEnter}
             />
