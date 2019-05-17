@@ -49,12 +49,13 @@ class Dashboard extends React.Component {
   componentDidMount = () => {
     this.props.getTimers();
     this.interval = setInterval(() => {
-      this.setState({
-        timer: this.calculateDifference(
-          this.props.timersList[0].started_at,
-          Date.now()
-        )
-      });
+      this.props.timersList.length &&
+        this.setState({
+          timer: this.calculateDifference(
+            this.props.timersList[0].started_at,
+            Date.now()
+          )
+        });
     }, 1000);
   };
 
@@ -208,24 +209,29 @@ class Dashboard extends React.Component {
               justify="center"
               spacing={16}
             >
-              {this.state.timersList.length && this.state.search
-                ? this.state.timersList.map(timer => (
-                    <TimeCard
-                      deleteTimer={this.deleteTimer}
-                      key={timer.id}
-                      timer={timer}
-                      calculateDifference={this.calculateDifference}
-                    />
-                  ))
-                : timersList.length &&
-                  timersList.map(timer => (
-                    <TimeCard
-                      deleteTimer={this.deleteTimer}
-                      key={timer.id}
-                      timer={timer}
-                      calculateDifference={this.calculateDifference}
-                    />
-                  ))}
+              {this.state.timersList.length && this.state.search ? (
+                this.state.timersList.map(timer => (
+                  <TimeCard
+                    deleteTimer={this.deleteTimer}
+                    key={timer.id}
+                    timer={timer}
+                    calculateDifference={this.calculateDifference}
+                  />
+                ))
+              ) : timersList.length && timersList.length ? (
+                timersList.map(timer => (
+                  <TimeCard
+                    deleteTimer={this.deleteTimer}
+                    key={timer.id}
+                    timer={timer}
+                    calculateDifference={this.calculateDifference}
+                  />
+                ))
+              ) : (
+                <Typography variant="h2" component="h2" color="primary">
+                  NO TIMERS YET
+                </Typography>
+              )}
             </Grid>
           </Grid>
         </Grid>
