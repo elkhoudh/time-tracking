@@ -18,6 +18,12 @@ const styles = theme => ({
 });
 
 class LandingPage extends React.Component {
+  componentDidMount = () => {
+    if (localStorage.id_token) {
+      this.props.history.push("/dashboard");
+    }
+  };
+
   login = () => {
     this.props.auth.login();
   };
