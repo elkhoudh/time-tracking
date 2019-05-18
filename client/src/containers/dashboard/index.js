@@ -48,6 +48,9 @@ class Dashboard extends React.Component {
   };
 
   componentDidMount = () => {
+    if (!localStorage.id_token) {
+      this.props.history.push("/");
+    }
     this.props.getTimers();
     this.interval = setInterval(() => {
       this.props.timersList.length &&
