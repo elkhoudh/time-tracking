@@ -90,3 +90,17 @@ export const deleteTimer = id => dispatch => {
     .then(() => dispatch(getTimers()))
     .catch(error => dispatch({ type: DELETE_TIMER_FAILURE, payload: error }));
 };
+
+// ------------------------------------ search Timers ------------------------------------
+
+export const SEARCH_TIMER_START = "SEARCH_TIMER_START";
+export const SEARCH_TIMER_SUCCESS = "SEARCH_TIMER_SUCCESS";
+export const SEARCH_TIMER_FAILURE = "SEARCH_TIMER_FAILURE";
+
+export const handleSearch = search => dispatch => {
+  if (search === "") {
+    dispatch(getTimers());
+  } else {
+    dispatch({ type: SEARCH_TIMER_SUCCESS, payload: search });
+  }
+};

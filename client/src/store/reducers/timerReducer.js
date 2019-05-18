@@ -12,7 +12,8 @@ import {
   STOP_TIMER_FAILURE,
   DELETE_TIMER_START,
   DELETE_TIMER_SUCCESS,
-  DELETE_TIMER_FAILURE
+  DELETE_TIMER_FAILURE,
+  SEARCH_TIMER_SUCCESS
 } from "../actions/timerActions";
 
 const initialState = {
@@ -107,6 +108,14 @@ export default function timerReducer(state = initialState, action) {
         ...state,
         isLoading: false,
         response: action.payload
+      };
+
+    case SEARCH_TIMER_SUCCESS:
+      return {
+        ...state,
+        timersList: state.timersList.filter(t =>
+          t.description.toLowerCase().includes(action.payload.toLowerCase())
+        )
       };
 
     default:

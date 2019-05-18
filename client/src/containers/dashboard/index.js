@@ -12,7 +12,8 @@ import {
   getTimers,
   startTimer,
   stopTimer,
-  deleteTimer
+  deleteTimer,
+  handleSearch
 } from "../../store/actions/timerActions";
 import TimeChart from "../../components/TimeChart";
 import TimeCard from "../../components/TimeCard";
@@ -111,13 +112,11 @@ class Dashboard extends React.Component {
   };
 
   /* Filter matching strings and update the state */
-  handleSearch = e => {
+  descriptionSearch = e => {
     e.preventDefault();
-    this.setState({
-      timersList: this.props.timersList.filter(timer =>
-        timer.description.includes(this.state.search)
-      )
-    });
+    this.setState({ search: e.target.value }, () =>
+      this.props.handleSearch(this.state.search)
+    );
   };
 
   render() {
@@ -129,6 +128,7 @@ class Dashboard extends React.Component {
       auth,
       isLoading
     } = this.props;
+
     return (
       <>
         {/* ------------------------------ Navigation Bar ------------------------------ */}
@@ -181,14 +181,14 @@ class Dashboard extends React.Component {
         </div>
         <hr />
         {/* ------------------------------ Search form ------------------------------ */}
-        <form onSubmit={this.handleSearch}>
+        <form onSubmit={this.descriptionSearch}>
           <TextField
             id="standard-name"
             label="Search for task cards..."
             name="search"
             className={classes.textField}
             value={this.state.search}
-            onChange={this.handleChange}
+            onChange={this.descriptionSearch}
             margin="normal"
           />
         </form>
@@ -209,16 +209,7 @@ class Dashboard extends React.Component {
               justify="center"
               spacing={16}
             >
-              {this.state.timersList.length && this.state.search ? (
-                this.state.timersList.map(timer => (
-                  <TimeCard
-                    deleteTimer={this.deleteTimer}
-                    key={timer.id}
-                    timer={timer}
-                    calculateDifference={this.calculateDifference}
-                  />
-                ))
-              ) : timersList.length ? (
+              {timersList.length ? (
                 timersList.map(timer => (
                   <TimeCard
                     deleteTimer={this.deleteTimer}
@@ -251,5 +242,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getTimers, startTimer, stopTimer, deleteTimer }
+  { getTimers, startTimer, stopTimer, deleteTimer, handleSearch }
 )(withStyles(styles)(Dashboard));
